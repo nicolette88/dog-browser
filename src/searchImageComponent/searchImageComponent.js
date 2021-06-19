@@ -22,6 +22,7 @@ class SearchImage extends ContentComponent {
     }
 
     let urlString = '';
+    dogbreed = dogbreed.toLowerCase();
     dogbreed = dogbreed.split(' ');
     // a dogbreed változó most már egy tömb!
     if (dogbreed.length === 1) {
