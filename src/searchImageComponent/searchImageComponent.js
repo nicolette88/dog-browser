@@ -39,7 +39,7 @@ class SearchImage extends ContentComponent {
   // Ez a metódus megjelenít egy képet (véletlenszerűen)
   displayImage(data) {
     this.clearErrors();
-    this.clearContent();
+    // this.clearContent();
     const image = document.createElement('img');
     // a data.message tömbből 1 véletlenszerű elemet kiválasztunk
     image.src = data.message[Math.floor(Math.random() * data.message.length)];
@@ -47,12 +47,14 @@ class SearchImage extends ContentComponent {
     // console.log(data);
   }
 
+  // 2. feladat alapján bővítettem egy másik input field-del
   // megjeleníti a keresőt:
   render() {
     const markup = `
     <form class="dog-search">
       <span class="search-icon"></span>
       <input type="text" id="dogSearchInput">
+      <input type="text" id="imageNumberInput" placeholder="1">
         <button>Search</button>
     </form>
     `;
@@ -72,7 +74,34 @@ class SearchImage extends ContentComponent {
       // ha az arrow function-ben csak egy bemeneti paraméter van, akkor a zárójel elhagyható
       this.getImages(searchTerm).then(result => {
         // ha csak egy dolgot kell csinálni az if block-ban, akkor a  kódblokk {} elhagyható
-        if (result) this.displayImage(result);
+        if (result) {
+          const count = document.querySelector('#imageNumberInput').value;
+          // console.log(parseInt(count));
+          let parseCount = parseInt(count);
+          // console.log(parseCount);
+          // console.log(typeof (parseCount));
+
+          // Kerekítés esetén így néz ki:
+          // const mathFloorCount = Math.round(count);
+          // console.log(mathFloorCount);
+
+          if (isNaN(parseCount)) {
+            parseCount = 1;
+            // console.log('igaz a feltétel ' + parseCount);
+          }
+          // else {
+          //   console.log('hamis a feltétel ' + parseCount);
+          // }
+
+          this.clearContent();
+
+          // console.log('itt indul a ciklus');
+          for (let i = 1; i <= parseCount; i++) {
+            // console.log(i);
+            this.displayImage(result);
+          }
+        }
+
       });
     });
 
