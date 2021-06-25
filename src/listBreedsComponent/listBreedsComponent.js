@@ -39,6 +39,10 @@ class ListBreeds extends ContentComponent {
     const item = document.createElement('div');
     item.classList.add('breed-list-item');
     item.innerHTML = title;
+    item.addEventListener('click', () => {
+      this.handleContentDisplay(title);
+      this.setSearchTerm(title);
+    });
     document.querySelector('#content').appendChild(item);
   }
 
