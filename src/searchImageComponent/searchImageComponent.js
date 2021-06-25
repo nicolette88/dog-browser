@@ -1,6 +1,7 @@
 import '../css/searchImageComponent.css';
 import ContentComponent from '../contentComponent/contentComponent.js';
-
+import yall from 'yall-js';
+import preloading from '../img/preloading.gif';
 
 class SearchImage extends ContentComponent {
 
@@ -9,8 +10,6 @@ class SearchImage extends ContentComponent {
     // példányosításkor, megjelenítjük a keresőt automatikusan
     this.render();
   }
-
-
 
   // ez a metódus letölti az adatot az API-ról
   async getImages(dogbreed) {
@@ -41,9 +40,20 @@ class SearchImage extends ContentComponent {
     this.clearErrors();
     // this.clearContent();
     const image = document.createElement('img');
+    let classes = image.classList.add('lazy');
+    image.src = '../img/preloading.gif';
     // a data.message tömbből 1 véletlenszerű elemet kiválasztunk
-    image.src = data.message[Math.floor(Math.random() * data.message.length)];
+    image.dataset.src = data.message[Math.floor(Math.random() * data.message.length)];
     document.querySelector('#content').appendChild(image);
+    yall({
+      events: {
+        load: event => {
+          if (event.target.nodeName === 'IMG' && !event.target.classList.contains('lazy')) {
+            event.target.classList.add('yall-loaded');
+          }
+        }
+      }
+    });
     // console.log(data);
   }
 
@@ -101,10 +111,8 @@ class SearchImage extends ContentComponent {
             this.displayImage(result);
           }
         }
-
       });
     });
-
   }
 }
 
